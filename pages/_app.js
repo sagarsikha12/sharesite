@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { AppProps } from 'next/app';
-import Navbar from '../components/Navbar'; // Import the Navbar component
-import Footer from '../components/footer';
+import Navbar from '../components/Navbar.js'; // Import the Navbar component
+import Footer from '../components/footer.js';
 
 
 function MyApp({ Component, pageProps }) {
