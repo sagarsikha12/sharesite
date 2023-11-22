@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
+  const [error,setError]=useState('');
   const [password, setPassword] = useState('');
   const [showContactPopup, setShowContactPopup] = useState(false); // State to control the pop-up
   const router = useRouter();
@@ -39,11 +41,12 @@ export default function LoginPage() {
           // After successful login, navigate to the campaigns page
           router.push('/campaigns');
         }
-      } else {
-        console.error('Login error:', response.data.error || 'Unknown error occurred');
+      } else {    
+        setError(response.data.error || 'Unknown error occurred');
       }
     } catch (error) {
-      console.error('Network or server error during login:', error);
+      
+      setError('Network or server error during login', error);
     }
   };
 
@@ -71,6 +74,7 @@ export default function LoginPage() {
                     type="email"
                     className="form-control"
                     placeholder="Email"
+                    autoComplete="Email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -82,12 +86,14 @@ export default function LoginPage() {
                     className="form-control"
                     placeholder="Password"
                     value={password}
+                    autoComplete="password" 
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
                 <button type="submit" className="btn btn-primary btn-block">Login</button>
               </form>
+              {error && <p className="alert alert-danger">{error}</p>}
             </div>
           </div>
         </div>

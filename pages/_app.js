@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar.js'; // Import the Navbar component
 import Footer from '../components/footer.js';
 
-
 function MyApp({ Component, pageProps }) {
   // Create a state variable to track authentication status
   const [isAuthenticated, setIsAuthenticated] = useState(false);
