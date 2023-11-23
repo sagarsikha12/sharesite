@@ -21,20 +21,16 @@ export default function LoginPage() {
           email: email,
           password: password,
         },
-      }, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      },
+      );
 
       if (response.status === 200) {
-        console.log('Login successful. Data:', response.data);
+        
 
         // If JWT token is returned, store it for later use
         if (response.data && response.data.jwt) {
           sessionStorage.setItem('token', response.data.jwt);
-          console.log('Token stored in session storage');
+         
 
           sessionStorage.setItem('refreshNeeded', 'true');
 
@@ -46,7 +42,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       
-      setError('Network or server error during login', error);
+      setError('Please Check your Account Details and try again', error);
     }
   };
 

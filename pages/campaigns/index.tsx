@@ -1,15 +1,17 @@
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Campaign } from '../../types/types'; // Adjust the import path for your types
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const CampaignsPage = () => {
-  const [campaignData, setCampaignData] = useState<Campaign[]>([]); // Use an array for multiple campaigns
+  const [campaignData, setCampaignData] = useState<Campaign[]>([]);
   const [copiedMessageVisible, setCopiedMessageVisible] = useState(false);
 
   useEffect(() => {
     async function fetchCampaignData() {
       try {
-        const response = await fetch( `${apiUrl}/api/v1/campaigns`);
+        const response = await fetch(`${apiUrl}/api/v1/campaigns`);
         const data = await response.json();
         setCampaignData(data);
       } catch (error) {
@@ -22,7 +24,6 @@ const CampaignsPage = () => {
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
-      // Show the copied message for a few seconds
       setCopiedMessageVisible(true);
       setTimeout(() => {
         setCopiedMessageVisible(false);
@@ -30,70 +31,66 @@ const CampaignsPage = () => {
     });
   };
 
-  const snippetLength = 100; // Define the maximum length for the content snippet
-  return (<div>
+  const snippetLength = 100;
 
-  
-    <Head>title=Campaigns</Head>
-    <div className="container">
-      <div className="row">
-        {campaignData.map((campaign) => {
-          const snippet = campaign.content.length > snippetLength 
-            ? campaign.content.substring(0, snippetLength) + '...' 
-            : campaign.content;
-  
-          return (
-            <div className="col-md-4 mb-4" key={campaign.id}>
-              <div className="card">
-                <div className="image-container">
-        
-                  <img
-                  src={campaign && campaign.cover_image_url ? campaign.cover_image_url : ''}
-                  alt={campaign?.title || 'Image Alt Text'}
-                 
-                  className="card-img"
-                />
+  return (
+    <div>
+      <Head>
+        <title>Campaigns</title>
+      </Head>
+      <div className="container">
+        <div className="row">
+          {campaignData.map((campaign) => {
+            const snippet = campaign.content.length > snippetLength
+              ? campaign.content.substring(0, snippetLength) + '...'
+              : campaign.content;
 
-                </div>
-                <div className="card-body">
-                  <h5 className="card-title">{campaign.title}</h5>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: snippet }}
-                    className="card-text"
-                  />
-                  <a
-                    href={`/campaigns/${campaign.id}.json`}
-                    className="btn btn-primary"
-                    onClick={() => copyToClipboard( `${apiUrl}/campaigns/${campaign.id}.json`)}
-                  >
-                    Read More
-                  </a>
-                  <button
-                    className="btn btn-success ml-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      copyToClipboard( `${apiUrl}/campaigns/${campaign.id}.json`);
-                    }}
-                  >
-                    Share
-                  </button>
+            return (
+              <div className="col-md-4 mb-4" key={campaign.id}>
+                <div className="card d-flex flex-column">
+                  <div className="image-container">
+                    <img
+                      src={campaign && campaign.cover_image_url ? campaign.cover_image_url : ''}
+                      alt={campaign?.title || 'Image Alt Text'}
+                      className="card-img"
+                    />
+                  </div>
+                  <div className="card-body flex-grow-1">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: snippet }}
+                      className="card-text"
+                    />
+                  </div>
+                  <div className="card-footer">
+                    <a href={`/campaigns/${campaign.id}`} className="btn btn-primary">
+                      Read More
+                    </a>
+                    <button
+                      className="btn btn-success ml-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        copyToClipboard(window.location.href + `/${campaign.id}`);
+                      }}
+                    >
+                      Share
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      {copiedMessageVisible && (
-        <div
-          className="toast show"
-          style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}
-        >
-          <div className="toast-body bg-success text-white">
-            URL copied to clipboard
-          </div>
+            );
+          })}
         </div>
-      )}
-  
+        {copiedMessageVisible && (
+          <div
+            className="toast show"
+            style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}
+          >
+            <div className="toast-body bg-success text-white">
+              URL copied to clipboard
+            </div>
+          </div>
+        )}
+      </div>
       <style jsx>{`
         .image-container {
           width: 100%;
@@ -101,12 +98,22 @@ const CampaignsPage = () => {
           overflow: hidden;
           position: relative;
         }
-  
+
         .card {
-          height: 400px; // Set a fixed height for the card
-          overflow-y: auto; // Add scroll if content exceeds card's height
+          display: flex;
+          flex-direction: column;
+          height: 400px;
         }
-  
+
+        .card-body {
+          flex-grow: 1;
+          overflow-y: auto;
+        }
+
+        .card-footer {
+          padding: 10px;
+        }
+
         .card-img {
           display: block;
           width: 100%;
@@ -118,7 +125,6 @@ const CampaignsPage = () => {
           transform: translate(-50%, -50%);
         }
       `}</style>
-    </div>
     </div>
   );
 };
