@@ -1,10 +1,14 @@
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Campaign } from '../../types/types'; // Adjust the import path for your types
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome icons
+import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import { faFacebookF, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const CampaignsPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [currentCampaignUrl, setCurrentCampaignUrl] = useState('');
   const [campaignData, setCampaignData] = useState<Campaign[]>([]);
   const [copiedMessageVisible, setCopiedMessageVisible] = useState(false);
 
@@ -21,6 +25,11 @@ const CampaignsPage = () => {
 
     fetchCampaignData();
   }, []);
+  const handleShare = (campaignId: number) => {
+    const url = window.location.origin + `/campaigns/${campaignId}`;
+    setCurrentCampaignUrl(url);
+    setShowModal(true);
+  };
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
@@ -38,6 +47,26 @@ const CampaignsPage = () => {
       <Head>
         <title>Campaigns</title>
       </Head>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModal(false)}>
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
+            <p>{currentCampaignUrl}</p>
+            <button onClick={() => copyToClipboard(currentCampaignUrl)}>
+              <FontAwesomeIcon icon={faCopy} /> Copy
+            </button>
+            {/* Social media icons */}
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon">
+              {/* FontAwesome Facebook Icon */}
+             
+              <FontAwesomeIcon icon={faFacebookSquare} />
+            </a>
+            {/* Repeat for other social media */}
+          </div>
+        </div>
+      )}
       <div className="container">
         <div className="row">
           {campaignData.map((campaign) => {
@@ -67,10 +96,12 @@ const CampaignsPage = () => {
                     </a>
                     <button
                       className="btn btn-success ml-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        copyToClipboard(window.location.href + `/${campaign.id}`);
-                      }}
+                      onClick={()=> handleShare(campaign.id)}
+                      // onClick={(e) => {
+                      //   e.preventDefault();
+                        
+                      //   copyToClipboard(window.location.href + `/${campaign.id}`);
+                      // }}
                     >
                       Share
                     </button>
@@ -80,6 +111,7 @@ const CampaignsPage = () => {
             );
           })}
         </div>
+        
         {copiedMessageVisible && (
           <div
             className="toast show"
@@ -92,6 +124,68 @@ const CampaignsPage = () => {
         )}
       </div>
       <style jsx>{`
+      .social-icon {
+        margin: 10px;
+        color: #4267B2; // Facebook color
+        cursor: pointer;
+      }
+    
+      .social-icon:hover {
+        color: darken(#4267B2, 10%);
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color:transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #333;
+      }
+
+      .close:hover {
+        color: #000;
+      }
+      
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        text-align: center;
+      }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
         .image-container {
           width: 100%;
           height: 200px;
