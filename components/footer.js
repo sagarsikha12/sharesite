@@ -5,8 +5,11 @@ const Footer = () => {
 
   const handleHelpClick = () => {
     setShowMessage(true);
-    // Optionally, you can set a timer to automatically hide the message after a few seconds
-    setTimeout(() => setShowMessage(false), 150000);
+    setTimeout(() => setShowMessage(false), 180000); // 3 minutes
+  };
+
+  const handleCloseMessage = () => {
+    setShowMessage(false);
   };
 
   return (
@@ -14,26 +17,47 @@ const Footer = () => {
       <style jsx>{`
         .support-message {
           color: #f8f9fa;
-         
+          position: relative; /* For positioning the close button */
         }
         .mailto-link {
-          color: black;
-          /* Additional styles if needed */
+          color: white;
+          border: 1px solid black;
+        }
+        .help-button {
+          color: white;
+          background-color: transparent;
+          border: 1px solid black;
+        }
+        .help-button:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+        .close-button {
+          position: absolute;
+          top: 0;
+          right: 0;
+          color: white;
+          background: red;
+          border: red;
+          cursor: pointer;
         }
       `}</style>
 
-      <button onClick={handleHelpClick} className="btn btn-light">
+      <button onClick={handleHelpClick} className="btn btn-info">
         Help and Support
       </button>
       {showMessage && (
         <p className="support-message">
           Please email to{' '}
-          <a href="mailto:admin@awaresite.com" className="mailto-link">
-            admin@awaresite.com
+          <a href="mailto:awareshare2023@gmail.com" className="mailto-link">
+            awareshare2023@gmail.com
           </a>{' '}
           for any queries.
+          <button onClick={handleCloseMessage} className="close-button">
+            &times; {/* This is a commonly used symbol for close buttons */}
+          </button>
         </p>
       )}
+      <br />
       © AwareShare Site 2023
     </footer>
   );
