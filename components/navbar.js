@@ -70,12 +70,42 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
               <li className="nav-item">
                 <Link href="/mycampaign" className="nav-link">My Campaigns</Link>
               </li>
-              {user && user.admin ? (
-                <li className="nav-item">
-                  <Link href="/admin/campaigns" className="nav-link">Review Request</Link>
-                </li>
-              ) : null}
+      
+              
              
+             {user && user.admin && (
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="adminDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Admin
+              </a>
+              <div className="dropdown-menu" aria-labelledby="adminDropdown">
+                <Link href="/admin/campaigns" className="dropdown-item">
+                  Review Requests
+                </Link>
+                <Link href="/admin/Userlist" className="dropdown-item">
+                  Manage users 
+                </Link>
+                <Link href="/admin/clearnotifications" className="dropdown-item">
+                   Clear notifications 
+                </Link>
+                <Link href="/admin/editcategories" className="dropdown-item">
+                   Manage Categories
+                </Link>
+                <Link href="/admin/managecampaigns" className="dropdown-item">
+                   Manage Campaigns
+                </Link>
+                {/* Add more admin-related links here */}
+              </div>
+            </li>
+          )}
               <li className="nav-item">
                 <Link href="/createCampaign" className="nav-link">New Campaign</Link>
               </li>
