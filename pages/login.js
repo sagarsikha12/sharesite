@@ -61,8 +61,14 @@ export default function LoginPage() {
       setEmailSent(true);
       setLoading(false);
     } catch (error) {
-      setLoading(false);
-      setError('Error sending password reset email: ' + error.message);
+      if(response.status === 422){
+        setLoading(false);
+        setError('Email is not registered. Please Sign UP First');
+      }else {
+        setLoading(false);
+        setError('Error sending password reset email: ' + error.message);
+      }
+     
     }
   };
 
