@@ -55,6 +55,7 @@ export default function LoginPage() {
     // Show the contact pop-up when "Forgot Password?" is clicked
     // setShowContactPopup(true);
     if (!email) {
+      setLoading(false); 
       setError('Please enter your email address to reset your password.');
       return;
    };
