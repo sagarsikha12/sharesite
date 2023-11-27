@@ -58,15 +58,14 @@ export default function LoginPage() {
           email: email,
         },
       });
+    
       setEmailSent(true);
       setLoading(false);
     } catch (error) {
-      if(response.status === 422){
+      
+      {
         setLoading(false);
-        setError('Email is not registered. Please Sign UP First');
-      }else {
-        setLoading(false);
-        setError('Error sending password reset email: ' + error.message);
+        setError('Error sending password reset email. Make sure to enter correct email ' );
       }
      
     }
