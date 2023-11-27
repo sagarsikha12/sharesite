@@ -138,7 +138,7 @@ const UserList = () => {
           <p>Total Users: {totalUsers}</p>
           <input
             type="text"
-            placeholder="Search users"
+            placeholder="Search users by Email"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="form-control"
@@ -154,8 +154,6 @@ const UserList = () => {
               <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
                 <th>Admin</th>
                 <th>Created At</th>
                 <th>Actions</th>
@@ -167,8 +165,6 @@ const UserList = () => {
                 <tr key={user.id}>
                   <td>{user.id}</td>
                   <td>{user.email}</td>
-                  <td>{user.first_name}</td>
-                  <td>{user.last_name}</td>
                   <td>{user.admin ? 'Yes' : 'No'}</td>
                   <td>{user.created_at}</td>
                   <td>

@@ -157,7 +157,7 @@ export default function CreateCampaignPage() {
       <style jsx>{styles}</style>
       <div className="container">
         <h1 className="mt-4">Create a New Campaign</h1>
-        <p>Current User Email: {currentUser?.email}</p>
+       
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleCreateCampaign}>
           {/* Form fields for title, category, cover image, and content */}
@@ -180,8 +180,7 @@ export default function CreateCampaignPage() {
           </div>
           <div className="editor-wrapper">
           <label >Campaign Content</label>
-          <div> {/* Assign an id to the wrapper */}
-            {/* Use the rich text editor */}
+          <div> 
             <WysiwygEditorNoSSR
               editorState={contentEditorState}
               onEditorStateChange={setContentEditorState}

@@ -15,6 +15,8 @@ function SignUpForm() {
   const [errors, setErrors] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSuccessVisible, setIsSuccessVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
 
   // Create refs for each input field
   const firstNameRef = useRef(null);
@@ -62,7 +64,8 @@ function SignUpForm() {
         emailRef.current.value = '';
         passwordRef.current.value = '';
         passwordConfirmationRef.current.value = '';
-        window.location.reload();
+        setShowPassword(false); // Reset password visibility toggle
+        setShowConfirmPassword(false); // Reset confirm password visibility toggle
       } else {
         console.log('registration error');
         if (data.errors) {
@@ -147,9 +150,9 @@ function SignUpForm() {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group password-input">
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'} // Toggle password visibility
                     className="form-control"
                     name="password"
                     ref={passwordRef}
@@ -159,10 +162,17 @@ function SignUpForm() {
                     autoComplete="new-password" 
                     required
                   />
+                  <button
+                    type="button"
+                    className={`password-toggle ${showPassword ? 'visible' : 'hidden'}`}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+                  </button>
                 </div>
-                <div className="form-group">
+                <div className="form-group password-input">
                   <input
-                    type="password"
+                    type={showConfirmPassword ? 'text' : 'password'} // Toggle confirm password visibility
                     className="form-control"
                     name="password_confirmation"
                     ref={passwordConfirmationRef}
@@ -172,6 +182,13 @@ function SignUpForm() {
                     autoComplete="new-password" 
                     required
                   />
+                  <button
+                    type="button"
+                    className={`password-toggle ${showConfirmPassword ? 'visible' : 'hidden'}`}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <i className={`fa ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+                  </button>
                 </div>
 
                 <button type="submit" className="btn btn-primary btn-block">

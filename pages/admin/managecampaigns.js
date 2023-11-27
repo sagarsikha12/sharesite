@@ -184,7 +184,7 @@ const CampaignList = () => {
           </div>
           <input
             type="text"
-            placeholder="Search campaigns"
+            placeholder="Search campaigns by Title"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="form-control"

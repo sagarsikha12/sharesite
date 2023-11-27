@@ -93,8 +93,8 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 <Link href="/admin/Userlist" className="dropdown-item">
                   Manage users 
                 </Link>
-                <Link href="/admin/clearnotifications" className="dropdown-item">
-                   Clear notifications 
+                <Link href="/admin/managenotification" className="dropdown-item">
+                  Manage Notifications 
                 </Link>
                 <Link href="/admin/editcategories" className="dropdown-item">
                    Manage Categories
