@@ -14,7 +14,9 @@ const WysiwygEditorNoSSR = dynamic(() => import('react-draft-wysiwyg').then((mod
 });
 
 export default function CreateCampaignPage() {
+  const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [coverImageUrl, setCoverImageUrl] = useState('');
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
@@ -27,6 +29,14 @@ export default function CreateCampaignPage() {
   // Editor state for the rich text editor
   const [contentEditorState, setContentEditorState] = useState(EditorState.createEmpty());
 
+  const renderImagePreview = () => {
+    if (coverImage) {
+      return URL.createObjectURL(coverImage);
+    } else if (coverImageUrl) {
+      return coverImageUrl;
+    }
+    return null; // No image selected or provided
+  };
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (!token) {
@@ -71,22 +81,28 @@ export default function CreateCampaignPage() {
 
     const editorContent = stateToHTML(contentEditorState.getCurrentContent());
 
-    console.log(editorContent);
+    
     if (!title  ) {
       setError('Please fill required fields.');
       setIsSubmitting(false);
       return;
-    }else if (!coverImage ){
-      setError('Please choose at least one Cover Image');
+    }else if (!coverImage && !coverImageUrl) {
+      // Check if both cover image and cover image URL are not provided
+      setError('Please provide a Cover Image either by uploading or via URL.');
       setIsSubmitting(false);
       return;
-    }else if(!category){
+    } else if (coverImage && coverImageUrl) {
+      // Check if both cover image and cover image URL are provided
+      setError('Please provide only one Cover Image, either by uploading or via URL.');
+      setIsSubmitting(false);
+      return;
+    } else if(!category){
       setError('Please select One category or create new ');
       setIsSubmitting(false);
       return;
     }else if (isContentEmpty(editorContent)) {
       setError('Content cannot be blank');
-      console.log('it is blank');
+      
       setIsSubmitting(false);
       return;
     }
@@ -98,7 +114,12 @@ export default function CreateCampaignPage() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('category_id', category);
-    formData.append('cover_image', coverImage);
+ 
+    if (coverImage) {
+      formData.append('cover_image', coverImage); // File upload
+    } else if (coverImageUrl) {
+      formData.append('cover_image_url', coverImageUrl); // URL provided
+    }
     formData.append('content', editorContent);
 
     try {
@@ -110,7 +131,16 @@ export default function CreateCampaignPage() {
       });
 
       if (response.status === 201) {
+         // Display success message'
+      
+      setSuccessMessage('Campaign created successfully.  Your campaign has been submitted for review and once it is accepted it will be publicly available. You can check status in my campaign.Redirecting to home page...');
+
+      // Wait for 10 seconds before redirecting
+      setTimeout(() => {
         router.push('/campaigns');
+      }, 10000);
+
+       
       } else {
         console.error('Campaign creation failed:', response.statusText);
       }
@@ -120,6 +150,7 @@ export default function CreateCampaignPage() {
       setIsSubmitting(false);
     }
   };
+
   // Define your CSS styles outside the return statement
   const styles = `
     .editor-wrapper {
@@ -141,6 +172,7 @@ export default function CreateCampaignPage() {
     }
   `;
 
+
   return (
     <div>
       {isSubmitting && (
@@ -157,8 +189,8 @@ export default function CreateCampaignPage() {
       <style jsx>{styles}</style>
       <div className="container">
         <h1 className="mt-4">Create a New Campaign</h1>
-       
-        {error && <p className="error">{error}</p>}
+        {successMessage && <p className="alert alert-success">{successMessage}</p>}
+        {error && <p className="alert alert-danger">{error}</p>}
         <form onSubmit={handleCreateCampaign}>
           {/* Form fields for title, category, cover image, and content */}
           <div className="form-group">
@@ -175,9 +207,16 @@ export default function CreateCampaignPage() {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="coverImage">Cover Image</label>
-            <input type="file" className="form-control-file" id="coverImage" accept="image/*" onChange={e => setCoverImage(e.target.files[0])}  />
-          </div>
+          <label htmlFor="coverImage">Cover Image</label>
+          <input type="file" className="form-control-file" id="coverImage" accept="image/*" onChange={e => setCoverImage(e.target.files[0])} />
+          <small className="form-text text-muted">
+        Note: Locally uploaded images will be removed after 24 hours. For permanent image hosting, use a service like Google Drive or Dropbox , set the image visibility to &apos; Anyone with the link &apos;, and paste the link below.
+      </small>
+          <input type="text" className="form-control mt-2" id="coverImageUrl" placeholder="Or paste image URL" value={coverImageUrl} onChange={e => setCoverImageUrl(e.target.value)} />
+        </div>
+        <div className="image-preview">
+          {renderImagePreview() && <img src={renderImagePreview()} alt="Cover Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />}
+        </div>
           <div className="editor-wrapper">
           <label >Campaign Content</label>
           <div> 
