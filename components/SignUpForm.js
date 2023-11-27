@@ -150,10 +150,12 @@ function SignUpForm() {
                     required
                   />
                 </div>
-                <div className="form-group password-input">
+                <div className="form-group password-input"  style={{ position: 'relative' }}>
                   <input
                     type={showPassword ? 'text' : 'password'} // Toggle password visibility
                     className="form-control"
+                    
+                    style={{ paddingRight: '30px' }}
                     name="password"
                     ref={passwordRef}
                     value={formData.password}
@@ -165,15 +167,27 @@ function SignUpForm() {
                   <button
                     type="button"
                     className={`password-toggle ${showPassword ? 'visible' : 'hidden'}`}
+                    style={{ 
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      border: 'none',
+                      background: 'none',
+                      padding: 0,
+                      cursor: 'pointer'
+                    }}
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </button>
                 </div>
-                <div className="form-group password-input">
+                <div className="form-group password-input" style={{ position: 'relative' }}>
                   <input
                     type={showConfirmPassword ? 'text' : 'password'} // Toggle confirm password visibility
                     className="form-control"
+                    
+                    style={{ paddingRight: '30px' }}
                     name="password_confirmation"
                     ref={passwordConfirmationRef}
                     value={formData.password_confirmation}
@@ -186,6 +200,17 @@ function SignUpForm() {
                     type="button"
                     className={`password-toggle ${showConfirmPassword ? 'visible' : 'hidden'}`}
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    
+                    style={{ 
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      border: 'none',
+                      background: 'none',
+                      padding: 0,
+                      cursor: 'pointer'
+                    }}
                   >
                     <i className={`fa ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </button>
