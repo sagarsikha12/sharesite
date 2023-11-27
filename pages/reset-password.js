@@ -1,0 +1,100 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+export default function ResetPassword() {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [resetToken, setResetToken] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Extract the reset token from the URL query parameters
+    if (router.query.reset_password_token) {
+      setResetToken(router.query.reset_password_token);
+    }
+  }, [router]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    try {
+      const response = await axios.put(`${apiUrl}/users/password`, {
+        user: {
+          reset_password_token: resetToken,
+          password: newPassword,
+          password_confirmation: confirmPassword,
+        },
+      });
+
+      if (response.status === 200) {
+        setSuccess(true);
+        // Optionally, redirect the user to the login page after a delay
+        // setTimeout(() => router.push('/login'), 3000);
+      } else {
+        setError('An error occurred. Please try again.');
+      }
+    } catch (error) {
+      setError(error.response.data?.error || 'An unknown error occurred.');
+    }
+  };
+
+  return (
+    <div className="reset-password-container">
+      <h2>Reset Password</h2>
+      {success ? (
+        <p>Password successfully reset. You can now log in with your new password.</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="new-password">New Password</label>
+            <input
+              id="new-password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirm-password">Confirm New Password</label>
+            <input
+              id="confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="error">{error}</p>}
+          <button type="submit">Reset Password</button>
+        </form>
+      )}
+
+      <style jsx>{`
+        .reset-password-container {
+          max-width: 400px;
+          margin: auto;
+          padding: 20px;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        .error {
+          color: red;
+        }
+      `}</style>
+    </div>
+  );
+}

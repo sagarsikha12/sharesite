@@ -14,6 +14,8 @@ const WysiwygEditorNoSSR = dynamic(() => import('react-draft-wysiwyg').then((mod
 });
 
 export default function CreateCampaignPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [coverImage, setCoverImage] = useState(null);
@@ -58,27 +60,40 @@ export default function CreateCampaignPage() {
       });
   }, [router]);
 
+  function isContentEmpty(htmlContent) {
+    // Remove HTML tags and check if any text content remains
+    const textContent = htmlContent.replace(/<[^>]*>/g, '').trim();
+    return textContent === '';
+  }
   const handleCreateCampaign = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Set the submitting status to true when the submission starts
 
+    const editorContent = stateToHTML(contentEditorState.getCurrentContent());
+
+    console.log(editorContent);
     if (!title  ) {
       setError('Please fill required fields.');
+      setIsSubmitting(false);
       return;
     }else if (!coverImage ){
       setError('Please choose at least one Cover Image');
+      setIsSubmitting(false);
       return;
     }else if(!category){
-      setError('Please select One category or create new ')
+      setError('Please select One category or create new ');
+      setIsSubmitting(false);
       return;
-    }else if(!contentEditorState){
+    }else if (isContentEmpty(editorContent)) {
       setError('Content cannot be blank');
+      console.log('it is blank');
+      setIsSubmitting(false);
       return;
     }
 
     // Convert the editor content to HTML or JSON format based on your API's requirements
     // You'll need to implement this part according to your backend API
-   
-    const editorContent = stateToHTML(contentEditorState.getCurrentContent());
+
 
     const formData = new FormData();
     formData.append('title', title);
@@ -101,6 +116,8 @@ export default function CreateCampaignPage() {
       }
     } catch (error) {
       console.error('Error creating campaign:', error);
+    }finally{
+      setIsSubmitting(false);
     }
   };
   // Define your CSS styles outside the return statement
@@ -111,10 +128,29 @@ export default function CreateCampaignPage() {
       padding: 8px;
       margin-bottom: 20px;
     }
+    .submitting-message {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .spinner-border {
+      margin-bottom: 10px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
   `;
 
   return (
     <div>
+      {isSubmitting && (
+      <div className="submitting-message">
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+        <p> Please Wait.. Your campaign is being submitted for review and once it is accepted it will be publicly available. You can check status in my campaign</p>
+      </div>
+    )}
       <Head>
         <title>Create a New Campaign</title>
       </Head>
@@ -127,11 +163,11 @@ export default function CreateCampaignPage() {
           {/* Form fields for title, category, cover image, and content */}
           <div className="form-group">
             <label htmlFor="title">Title</label>
-            <input type="text" className="form-control" id="title" value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter title" required />
+            <input type="text" className="form-control" id="title" value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter title"  />
           </div>
           <div className="form-group">
             <label htmlFor="category">Category</label>
-            <select className="form-control" id="category" value={category} onChange={e => setCategory(e.target.value)} required>
+            <select className="form-control" id="category" value={category} onChange={e => setCategory(e.target.value)} >
               <option value="">Select a Category</option>
               {categories.map(category => (
                 <option key={category.id} value={category.id}>{category.name}</option>
@@ -140,7 +176,7 @@ export default function CreateCampaignPage() {
           </div>
           <div className="form-group">
             <label htmlFor="coverImage">Cover Image</label>
-            <input type="file" className="form-control-file" id="coverImage" accept="image/*" onChange={e => setCoverImage(e.target.files[0])} required />
+            <input type="file" className="form-control-file" id="coverImage" accept="image/*" onChange={e => setCoverImage(e.target.files[0])}  />
           </div>
           <div className="editor-wrapper">
           <label >Campaign Content</label>

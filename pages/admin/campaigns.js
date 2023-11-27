@@ -18,7 +18,9 @@ const AdminCampaigns = () => {
             'Authorization': `Bearer ${token}`
           }
         });
+       
         setCampaigns(response.data);
+      
       } catch (error) {
         console.error("Error fetching non-reviewed campaigns:", error);
       } finally {

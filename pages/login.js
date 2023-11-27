@@ -7,6 +7,8 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [error,setError]=useState('');
   const [password, setPassword] = useState('');
   const [showContactPopup, setShowContactPopup] = useState(false); // State to control the pop-up
@@ -14,6 +16,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await axios.post(`${apiUrl}/api/v1/login`, {
@@ -40,16 +43,41 @@ export default function LoginPage() {
       } else {    
         setError(response.data.error || 'Unknown error occurred');
       }
+      setLoading(false); 
     } catch (error) {
-      
+      setLoading(false); 
       setError('Please Check your Account Details and try again', error);
     }
   };
 
-  const handleForgotPasswordClick = () => {
+  const handleForgotPasswordClick = async() => {
+    setLoading(true); 
     // Show the contact pop-up when "Forgot Password?" is clicked
-    setShowContactPopup(true);
-  };
+    // setShowContactPopup(true);
+    if (!email) {
+      setError('Please enter your email address to reset your password.');
+      return;
+   };
+   try {
+    // Make an API request to initiate the password reset process
+    const response = await axios.post(`${apiUrl}/api/v1/passwords`, {
+      user: {
+        email: email,
+      },
+    });
+    setEmailSent(true);
+    setLoading(false); 
+
+    // Handle response here (e.g., showing a confirmation message)
+    // ...
+  } catch (error) {
+    setLoading(false); 
+    setError('Error sending password reset email: ' + error.message);
+  }
+};
+
+
+
 
   const handleCloseContactPopup = () => {
     // Close the contact pop-up when the user clicks the close button
@@ -63,6 +91,7 @@ export default function LoginPage() {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
+            {loading && <div className="loading-spinner"></div>}
               <h1 className="card-title text-center">Login</h1>
               <form onSubmit={handleLogin}>
                 <div className="form-group">
@@ -96,11 +125,16 @@ export default function LoginPage() {
       </div>
 
       {/* "Forgot Password?" Link */}
-      <div className="text-center">
-        <button className="btn btn-link" onClick={handleForgotPasswordClick}>
-          Forgot Password?
-        </button>
-      </div>
+      {emailSent ? (
+        <div>
+          Password reset email has been sent. Please check your spam folder for the email.
+        </div>
+      ) :(<div className="text-center">
+      <button className="btn btn-link" onClick={handleForgotPasswordClick}>
+        Forgot Password?
+      </button>
+    </div>)}
+      
 
       {/* Contact Pop-up */}
       {showContactPopup && (
@@ -115,7 +149,20 @@ export default function LoginPage() {
       )}
 
       <style jsx>{`
-        .contact-popup {
+      .loading-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }      
+      .contact-popup {
           position: fixed;
           top: 0;
           left: 0;

@@ -50,7 +50,7 @@ function SignUpForm() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log('Successful registration');
+        
         setErrors([]);
         setSuccessMessage('Registration successful');
         setIsSuccessVisible(true);
