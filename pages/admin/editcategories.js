@@ -58,7 +58,30 @@ const CategoryList = () => {
     if (confirmed) {
       // Implement the delete category logic here
       // Make an API request to delete the category by categoryId
-      console.log(`Delete category with ID: ${categoryId}`);
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        const apiConfig = {
+          baseURL: `${apiUrl}/api/v1`,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        };
+  
+        axios.delete(`/categories/${categoryId}`, apiConfig)
+        .then((response) => {
+          // Update state to remove the deleted category
+          setCategories((prevCategories) => prevCategories.filter(category => category.id !== categoryId));
+          setFilteredCategories((prevFilteredCategories) => prevFilteredCategories.filter(category => category.id !== categoryId));
+
+          setSuccessMessage(`Category Deleted`);
+          setErrorMessage('');
+        })
+        .catch((error) => {
+          setSuccessMessage('');
+          setErrorMessage(`Error Deleting category: ${error.message}`);
+        });
+      }
     }
   };
 
