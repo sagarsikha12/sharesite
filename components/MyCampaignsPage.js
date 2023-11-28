@@ -22,7 +22,7 @@ const MyCampaignsPage = () => {
       .then(response => {
         setCampaigns(response.data);
         setLoading(false);
-        console.log(response);
+ 
       })
       .catch(error => {
         console.error('Error fetching campaigns:', error);

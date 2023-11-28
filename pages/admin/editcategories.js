@@ -28,7 +28,7 @@ const CategoryList = () => {
       axios
         .get('/categories', apiConfig)
         .then((response) => {
-          console.log(response);
+          
           const categoryData = response.data;
 
           if (Array.isArray(categoryData)) {
