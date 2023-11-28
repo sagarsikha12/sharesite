@@ -23,10 +23,15 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (newPassword !== confirmPassword) {
+
+    if (newPassword.length < 6){
+      setError('Password must be at least 6 characters.');
+      return;
+    }else if (newPassword !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
+    
 
     try {
       const response = await axios.put(`${apiUrl}/users/password`, {
@@ -97,7 +102,7 @@ export default function ResetPassword() {
             </div>
           </div>
           {error && <p className="error">{error}</p>}
-          <button type="submit">Reset Password</button>
+          <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
         </form>
       )}
 
