@@ -5,12 +5,11 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html'; // Import stateToHTML function
-import { convertFromHTML } from 'draft-convert'; // Import convertFromHTML function
+import { stateToHTML } from 'draft-js-export-html';
+import { convertFromHTML } from 'draft-convert';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-// Import Draft.js components dynamically
 const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 });
@@ -18,8 +17,6 @@ const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Edi
 const EditCampaignPage = () => {
   const router = useRouter();
   const { id } = router.query;
-
-  const [campaign, setCampaign] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -30,25 +27,24 @@ const EditCampaignPage = () => {
 
   useEffect(() => {
     async function fetchCampaignData() {
-      const response = await fetch(`${apiUrl}/campaigns/${id}.json`);
-      const data = await response.json();
-      setCampaign(data);
-
-      // Check if data.content is defined before converting
-      if (data.content) {
-        const contentState = convertFromHTML(data.content);
-        setFormData({
-          title: data.title,
-          content: EditorState.createWithContent(contentState),
-          cover_image_url: data.cover_image_url,
-          cover_image: data.cover_image,
-        });
+      if (id) {
+        try {
+          const response = await fetch(`${apiUrl}/campaigns/${id}`);
+          const data = await response.json();
+          const contentState = data.content ? convertFromHTML(data.content) : ContentState.createFromText('');
+          setFormData({
+            title: data.title,
+            content: EditorState.createWithContent(contentState),
+            cover_image_url: data.cover_image_url,
+            cover_image: null,
+          });
+        } catch (error) {
+          console.error('Error fetching campaign data:', error);
+        }
       }
     }
 
-    if (id) {
-      fetchCampaignData();
-    }
+    fetchCampaignData();
   }, [id]);
 
   const handleChange = (e) => {
@@ -62,15 +58,13 @@ const EditCampaignPage = () => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
         setFormData({
           ...formData,
           cover_image: file,
-          cover_image_url: reader.result,
+          cover_image_url: reader.result ,
         });
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -79,25 +73,27 @@ const EditCampaignPage = () => {
     e.preventDefault();
 
     const token = sessionStorage.getItem('token');
-
     const contentHtml = stateToHTML(formData.content.getCurrentContent());
-
     const data = new FormData();
+
     data.append('title', formData.title);
     data.append('content', contentHtml);
     if (formData.cover_image) {
       data.append('cover_image', formData.cover_image);
+    } else if (formData.cover_image_url) {
+      data.append('cover_image_url', formData.cover_image_url);
     }
 
     try {
-      const response = await axios.put(`${apiUrl}/api/v1/campaigns/${id}.json`, data, {
+      const response = await axios.put(`${apiUrl}/api/v1/campaigns/${id}`, data, {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       if (response.status === 200) {
-        router.push(`/campaigns/${id}.json`);
+        router.push(`/campaigns/${id}`);
       } else {
         console.error('Campaign update failed:', response.statusText);
       }
@@ -112,51 +108,49 @@ const EditCampaignPage = () => {
         <title>Edit Campaign</title>
       </Head>
       <h1>Edit Campaign</h1>
-
-      {campaign && (
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Title:</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
+      <form onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label>Title:</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="image-holder">
+          {formData.cover_image_url && <img src={formData.cover_image_url} alt="Cover" />}
+        </div>
+        <div className="input-group">
+          <label>Upload Image:</label>
+          <input
+            type="file"
+            name="cover_image"
+            onChange={handleImageUpload}
+          />
+        </div>
+        <div className="input-group">
+          <label>Or Enter Image URL:</label>
+          <input
+            type="text"
+            name="cover_image_url"
+            value={formData.cover_image_url}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-group">
+          <label>Content:</label>
+          <div className="editor-wrapper">
+            <Editor
+              editorState={formData.content}
+              onEditorStateChange={(content) => setFormData({ ...formData, content })}
             />
           </div>
-          <div className="image-holder">
-            <img src={formData.cover_image_url} alt="Cover" />
-          </div>
-          <div className="input-group">
-            <div className="custom-file">
-              <input
-                type="file"
-                className="custom-file-input"
-                id="coverImage"
-                onChange={handleImageUpload}
-              />
-              <label className="custom-file-label" htmlFor="coverImage">
-                Choose file
-              </label>
-            </div>
-          </div>
+        </div>
+        <button type="submit" className="btn btn-success">Update Campaign</button>
+      </form>
 
-          <div className="input-group">
-            <label>Content:</label>
-            <div className="editor-wrapper">
-              <Editor
-                editorState={formData.content}
-                onEditorStateChange={(content) => setFormData({ ...formData, content })}
-              />
-            </div>
-          </div>
-
-          <div className="input-group">
-            <button className='btn btn-success' type="submit">Update Campaign</button>
-          </div>
-        </form>
-      )}
-
+      
       <style jsx>{`
         .edit-container {
           max-width: 600px;

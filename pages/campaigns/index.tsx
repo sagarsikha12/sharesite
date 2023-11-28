@@ -55,13 +55,13 @@ const CampaignsPage = () => {
             <button onClick={() => copyToClipboard(currentCampaignUrl)}>
               Copy
             </button>
-            {/* Social media icons */}
+            
             <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon">
-              {/* FontAwesome Facebook Icon */}
+           
              
               Share to facebook
             </a>
-            {/* Repeat for other social media */}
+          
           </div>
         </div>
       )}

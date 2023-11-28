@@ -44,7 +44,7 @@ export default function ResetPassword() {
         setError('An error occurred. Please try again.');
       }
     } catch (error) {
-      setError(error.response.data?.error || 'An unknown error occurred.');
+      setError(error);
     }
   };
 
