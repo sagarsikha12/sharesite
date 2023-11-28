@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Campaign } from '../../types/types'; // Adjust the import path for your types
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome icons
-import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
-import { faFacebookF, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const CampaignsPage = () => {
@@ -50,18 +48,18 @@ const CampaignsPage = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowModal(false)}>
-              <FontAwesomeIcon icon={faTimes} />
+            <span  className=" close close-button" onClick={() => setShowModal(false)}>
+            &times;
             </span>
             <p>{currentCampaignUrl}</p>
             <button onClick={() => copyToClipboard(currentCampaignUrl)}>
-              <FontAwesomeIcon icon={faCopy} /> Copy
+              Copy
             </button>
             {/* Social media icons */}
             <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon">
               {/* FontAwesome Facebook Icon */}
              
-              <FontAwesomeIcon icon={faFacebookSquare} />
+              Share to facebook
             </a>
             {/* Repeat for other social media */}
           </div>
