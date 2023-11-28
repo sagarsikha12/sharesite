@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -59,7 +57,7 @@ export default function ResetPassword() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="new-password">New Password</label>
-            <div className="password-input">
+            <div className="password-wrapper">
               <input
                 id="new-password"
                 type={showNewPassword ? 'text' : 'password'}
@@ -67,14 +65,18 @@ export default function ResetPassword() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
               />
-              <span className="password-toggle-icon" onClick={() => setShowNewPassword(!showNewPassword)}>
-                <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} />
-              </span>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? '🙈' : '👁'}
+              </button>
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="confirm-password">Confirm New Password</label>
-            <div className="password-input">
+            <div className="password-wrapper">
               <input
                 id="confirm-password"
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -82,9 +84,13 @@ export default function ResetPassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              <span className="password-toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-              </span>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? '🙈' : '👁'}
+              </button>
             </div>
           </div>
           {error && <p className="error">{error}</p>}
@@ -103,16 +109,25 @@ export default function ResetPassword() {
           margin-bottom: 15px;
         }
 
-        .password-input {
+        .password-wrapper {
           position: relative;
         }
 
-        .password-toggle-icon {
+        input[type="password"],
+        input[type="text"] {
+          width: 100%;
+          padding-right: 40px; /* Make space for the toggle button */
+        }
+
+        .password-toggle {
           position: absolute;
           right: 10px;
           top: 50%;
           transform: translateY(-50%);
+          border: none;
+          background: none;
           cursor: pointer;
+          font-size: 18px;
         }
 
         .error {
