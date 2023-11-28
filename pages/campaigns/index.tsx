@@ -83,6 +83,7 @@ const CampaignsPage = () => {
                     />
                   </div>
                   <div className="card-body flex-grow-1">
+                  <h3 className="campaign-title">{campaign.title}</h3> {/* Title added here */}
                     <div
                       dangerouslySetInnerHTML={{ __html: snippet }}
                       className="card-text"
