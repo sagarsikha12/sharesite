@@ -42,6 +42,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleLogout = () => {
     // Clear the token and log the user out
     sessionStorage.removeItem('token');
+    Router.push('/campaigns');
     setUser(null);
     setIsAuthenticated(false);
   };
