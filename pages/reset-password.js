@@ -52,7 +52,10 @@ export default function ResetPassword() {
     <div className="reset-password-container">
       <h2>Reset Password</h2>
       {success ? (
-        <p>Password successfully reset. You can now log in with your new password.</p>
+        <div>
+          <p className='alert alert-success'>Password successfully reset. You can now log in with your new password.</p>
+        </div>
+      
       ) : (
         <form onSubmit={handleSubmit}>
           <div className="form-group">
