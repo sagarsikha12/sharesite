@@ -42,8 +42,7 @@ const CampaignList = () => {
 
       axios.get('/campaigns/listall', apiConfig)
         .then(response => {
-          console.log(response.data);
-
+          
           const campaignData = response.data;
 
           if (Array.isArray(campaignData)) {

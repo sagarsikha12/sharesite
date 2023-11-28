@@ -11,7 +11,7 @@ interface CampaignCardProps {
 const CampaignCard: React.FC<CampaignCardProps> = ({ title, content, cover_image_url, id }) => {
   // Define the maximum length for the content snippet
   const snippetLength = 100;
-  console.log(content);
+
 
   // Truncate the content if it exceeds the snippet length
   const snippet = content.length > snippetLength 

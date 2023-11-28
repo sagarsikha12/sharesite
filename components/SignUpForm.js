@@ -68,7 +68,7 @@ function SignUpForm() {
         setShowPassword(false); // Reset password visibility toggle
         setShowConfirmPassword(false); // Reset confirm password visibility toggle
       } else {
-        console.log('registration error');
+       
         if (data.errors) {
           setErrors(data.errors);
         }
