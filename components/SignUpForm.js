@@ -56,6 +56,7 @@ function SignUpForm() {
         setErrors([]);
         setSuccessMessage('Registration successful');
         setIsSuccessVisible(true);
+        setFormData(initialFormData);
 
         // Clear the form fields individually by resetting their values
         firstNameRef.current.value = '';
