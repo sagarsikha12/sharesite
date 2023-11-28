@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar.js'; // Import the Navbar component
 import Footer from '../components/footer.js';
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }) {
   // Create a state variable to track authentication status
@@ -85,6 +86,7 @@ return (
   </div>
    
     <Footer />
+    <Analytics />
   </div>
 );
 
