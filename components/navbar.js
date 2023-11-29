@@ -125,6 +125,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 <Link href="/passwordchange" className="dropdown-item">
                   Change Password
                 </Link>
+                <Link href="/updateprofileform" className="dropdown-item">
+                  Update Profile
+                </Link>
                 <div className="dropdown-item" onClick={handleLogout}>
                   
                   <button className="btn btn-danger" onClick={handleLogout}>Logout&nbsp;
