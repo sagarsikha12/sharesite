@@ -51,15 +51,19 @@ const CampaignsPage = () => {
             <span  className=" close close-button" onClick={() => setShowModal(false)}>
             &times;
             </span>
-            <p>{currentCampaignUrl}</p>
-            <button onClick={() => copyToClipboard(currentCampaignUrl)}>
-              Copy
+            <br/>
+            <p className='alert alert-success'>{currentCampaignUrl}</p>
+            <button className='btn btn-info' onClick={() => copyToClipboard(currentCampaignUrl)}>
+            <i className ="fa-regular fa-copy fa-bounce fa-xl"></i>
+            Copy
             </button>
             
             <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon">
            
+        
+            <i className="fa-brands fa-square-facebook fa-beat-fade fa-2xl"></i>
              
-              Share to facebook
+          
             </a>
           
           </div>
@@ -91,6 +95,7 @@ const CampaignsPage = () => {
                   </div>
                   <div className="card-footer">
                     <a href={`/campaigns/${campaign.id}`} className="btn btn-primary">
+                    <i className="fa-brands fa-readme fa-flip fa-lg" ></i>&nbsp;
                       Read More
                     </a>
                     <button
@@ -102,6 +107,7 @@ const CampaignsPage = () => {
                       //   copyToClipboard(window.location.href + `/${campaign.id}`);
                       // }}
                     >
+                      <i className="fa-regular fa-share fa-beat-fade fa-lg"></i>&nbsp;
                       Share
                     </button>
                   </div>
@@ -158,11 +164,11 @@ const CampaignsPage = () => {
         top: 10px;
         right: 10px;
         cursor: pointer;
-        color: #333;
+        color: red;
       }
 
       .close:hover {
-        color: #000;
+        color: red;
       }
       
       .modal-content {

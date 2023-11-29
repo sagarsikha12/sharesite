@@ -176,13 +176,15 @@ const UserList = () => {
                           className="btn btn-danger"
                           onClick={() => handleDeleteUser(user.id)}
                         >
-                          Delete
+                          Delete&nbsp;
+                          <i className="fa-solid fa-trash "></i>
                         </button>
                         <button
                           className="btn btn-primary"
                           onClick={() => handleMakeAdmin(user.id)}
                         >
-                          Make Admin
+                          Make Admin&nbsp;
+                          <i className="fa-solid fa-user-tie "></i>
                         </button>
                       </>
                     )}

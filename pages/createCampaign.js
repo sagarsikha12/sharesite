@@ -130,6 +130,7 @@ export default function CreateCampaignPage() {
         }
       });
 
+
       if (response.status === 201) {
          // Display success message'
       

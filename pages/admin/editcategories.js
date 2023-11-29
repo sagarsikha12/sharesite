@@ -187,22 +187,27 @@ const CategoryList = () => {
                     ) : (
                       <>
                         {category.name}
-                        <button
-                          className="btn btn-primary ml-2"
-                          onClick={() => handleEditCategory(category)}
-                        >
-                          Edit
-                        </button>
+                       
                       </>
                     )}
                   </td>
                   <td>
+                    <div className='flex'>
+                      
+                    <button 
+                          className=" flex-auto btn btn-primary mr-2"
+                          onClick={() => handleEditCategory(category)}
+                        >
+                          Edit&nbsp; <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
                     <button
-                      className="btn btn-danger"
+                      className=" flex auto btn btn-danger"
                       onClick={() => handleDeleteCategory(category.id)}
                     >
-                      Delete
+                      Delete&nbsp; <i class="fa-solid fa-trash"></i>
                     </button>
+                    </div>
+                 
                   </td>
                 </tr>
               ))}

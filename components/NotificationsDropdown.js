@@ -102,7 +102,9 @@ const NotificationsDropdown = () => {
             
             {(
               <button className="btn btn-danger" onClick={deleteAllNotifications}>
-                Delete Unnecessary Notifications
+
+               
+                          <i className="fa-solid fa-trash "></i> &nbsp;Delete Unnecessary Notifications
               </button>
             )}
           </div>

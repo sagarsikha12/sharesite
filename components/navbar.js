@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 
@@ -12,6 +13,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     // Check if the user is authenticated when the component mounts
@@ -42,7 +44,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleLogout = () => {
     // Clear the token and log the user out
     sessionStorage.removeItem('token');
-    Router.push('/campaigns');
+    router.push('/campaigns');
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -113,10 +115,28 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
               <li className="nav-item">
                 <Link href="/addcategorypage" className="nav-link">New Category</Link>
               </li>
+              <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              
-              <li className="nav-item">
-                <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
-              </li>
+              
+              <i className="fa-regular fa-circle-user fa-fade fa-2xl"></i>
+              </a>
+              <div className="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="userDropdown">
+                <Link href="/passwordchange" className="dropdown-item">
+                  Change Password
+                </Link>
+                <div className="dropdown-item" onClick={handleLogout}>
+                  
+                  <button className="btn btn-danger" onClick={handleLogout}>Logout&nbsp;
+                <i className="fa-solid fa-right-from-bracket"></i></button>
+               
+                
+                </div>
+              </div>
+            </li>
+
+             
+             
             </>
           ) : (
             <>

@@ -43,6 +43,7 @@ const Footer = () => {
       `}</style>
 
       <button onClick={handleHelpClick} className="btn btn-info">
+      <i className="fa-regular fa-envelope"></i>&nbsp;
         Help and Support
       </button>
       {showMessage && (

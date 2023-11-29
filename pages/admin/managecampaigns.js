@@ -217,20 +217,26 @@ const CampaignList = () => {
                           onClick={() => approveCampaign(campaign.id)}
                         >
                           Accept
+                         &nbsp;
+              
+              <i class="fa-solid fa-check"></i>
                         </button>
                         <button
                           className="btn btn-danger"
                           onClick={() => rejectCampaign(campaign.id)}
                         >
                           Reject
+                          &nbsp;
+              <i class="fa-solid fa-ban"></i>
                         </button>
                       </>
                     ) : (
                       <button
                         className="btn btn-danger"
                         onClick={() => handleDeleteCampaign(campaign.id)}
-                      >
-                        Delete
+                      >                       
+                        Delete&nbsp;
+                          <i className="fa-solid fa-trash "></i>
                       </button>
                     )}
                   </td>

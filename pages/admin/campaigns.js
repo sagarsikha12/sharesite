@@ -85,8 +85,13 @@ const AdminCampaigns = () => {
               <tr key={campaign.id}>
                 <td>{campaign.title}</td>
             <td className="d-flex">
-              <button className="btn btn-primary me-2"  style={{ marginRight: '10px' }}onClick={() => approveCampaign(campaign.id)}>Approve</button>
-              <button className="btn btn-danger" onClick={() => rejectCampaign(campaign.id)}>Reject</button>
+              <button className="btn btn-primary me-2"  style={{ marginRight: '10px' }}onClick={() => approveCampaign(campaign.id)}>Approve&nbsp;
+              
+              <i class="fa-solid fa-check"></i></button>
+             
+              <button className="btn btn-danger" onClick={() => rejectCampaign(campaign.id)}>Reject&nbsp;
+              <i class="fa-solid fa-ban"></i>
+              </button>
             </td>
               </tr>
             ))}

@@ -94,7 +94,9 @@ const NotificationsPage = () => {
                 <td>{notification.status}</td>
                 <td>
                   <button className="btn btn-danger" onClick={() => deleteNotification(notification.id)}>
-                    Delete
+                    
+                    Delete&nbsp;
+                          <i className="fa-solid fa-trash "></i>
                   </button>
                 </td>
               </tr>

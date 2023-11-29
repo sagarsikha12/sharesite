@@ -88,8 +88,16 @@ const MyCampaignsPage = () => {
                 <td>{campaign.title}</td>
                 <td>{campaign.approved.charAt(0).toUpperCase() + campaign.approved.slice(1)}</td>
                 <td>
-                  <button className="btn btn-success mr-2" onClick={() => handleEditCampaign(campaign.id)}>Edit</button>
-                  <button className="btn btn-danger" onClick={() => handleDeleteCampaign(campaign.id)}>Delete</button>
+                  
+                  <button className="btn btn-success mr-2" onClick={() => handleEditCampaign(campaign.id)}>Edit&nbsp;
+                  <i className="fa-solid fa-pen-to-square"></i>
+                  </button>
+                 
+                  <button className="btn btn-danger" onClick={() => handleDeleteCampaign(campaign.id)}>Delete&nbsp;
+                  <i class="fa-solid fa-trash"></i>
+                  </button>
+                 
+
                 </td>
               </tr>
             ))}

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar.js'; // Import the Navbar component
 import Footer from '../components/footer.js';
 
+import Script from 'next/script.js';
+
 
 function MyApp({ Component, pageProps }) {
   // Create a state variable to track authentication status
@@ -79,7 +81,9 @@ return (
   
   
   <div className="d-flex flex-column min-vh-100" key={sessionKey}>
-    
+   
+    <Script src="https://kit.fontawesome.com/665ff9f403.js" ></Script>
+
     <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
     <div className="flex-grow-1">
     <Component {...pageProps} /> 
