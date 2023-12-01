@@ -23,6 +23,7 @@ const CampaignsPage = () => {
 
     fetchCampaignData();
   }, []);
+
   const handleShare = (campaignId: number) => {
     const url = window.location.origin + `/campaigns/${campaignId}`;
     setCurrentCampaignUrl(url);
@@ -38,8 +39,6 @@ const CampaignsPage = () => {
     });
   };
 
-  const snippetLength = 100;
-
   return (
     <div>
       <Head>
@@ -48,64 +47,60 @@ const CampaignsPage = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <span  className=" close close-button" onClick={() => setShowModal(false)}>
-            &times;
+            <span className="close close-button" onClick={() => setShowModal(false)}>
+              &times;
             </span>
-            <br/>
-            <p className='alert alert-success'>{currentCampaignUrl}</p>
-            <button className='btn btn-info' onClick={() => copyToClipboard(currentCampaignUrl)}>
-            <i className ="fa-regular fa-copy fa-bounce fa-xl"></i>
-            Copy
-            </button>
-            
-            <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon">
-           
-        
-            <i className="fa-brands fa-square-facebook fa-beat-fade fa-2xl"></i>
-             
-          
-            </a>
-          
+            <br />
+            <div className="url-container">
+              <p className='alert alert-success'>{currentCampaignUrl}</p>
+              <button className='btn btn-info' onClick={() => copyToClipboard(currentCampaignUrl)}>
+                <i className="fa-regular fa-copy fa-bounce fa-xl"></i>
+                Copy
+              </button>
+            </div>
+            <div className="social-icons-container">
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon facebook">
+                <i className="fa-brands fa-square-facebook fa-beat-fade fa-2xl"></i>
+              </a>
+              {/* Add Instagram share */}
+              <a href={`https://www.instagram.com/?url=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon instagram">
+                <i className="fa-brands fa-instagram fa-2x"></i>
+              </a>
+              {/* Add Messenger share */}
+              <a href={`https://www.messenger.com/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon messenger">
+                <i className="fa-brands fa-facebook-messenger fa-2x"></i>
+              </a>
+              {/* Add WhatsApp share */}
+              <a href={`https://wa.me/?text=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon whatsapp">
+                <i className="fa-brands fa-whatsapp fa-2x"></i>
+              </a>
+            </div>
           </div>
         </div>
       )}
       <div className="container">
         <div className="row">
           {campaignData.map((campaign) => {
-            const snippet = campaign.content.length > snippetLength
-              ? campaign.content.substring(0, snippetLength) + '...'
-              : campaign.content;
-
             return (
               <div className="col-md-4 mb-4" key={campaign.id}>
-                <div className="card d-flex flex-column">
-                  <div className="image-container">
-                    <img
-                      src={campaign && campaign.cover_image_url ? campaign.cover_image_url : ''}
-                      alt={campaign?.title || 'Image Alt Text'}
-                      className="card-img"
-                    />
+                <div className="card">
+                  <img
+                    src={campaign && campaign.cover_image_url ? campaign.cover_image_url : ''}
+                    alt={campaign?.title || 'Image Alt Text'}
+                    className="card-img-top"
+                  />
+                  <div className="card-body">
+                    <h3 className="campaign-title">{campaign.title}</h3>
+                    <p className="card-text">{campaign.content}</p>
                   </div>
-                  <div className="card-body flex-grow-1">
-                  <h3 className="campaign-title">{campaign.title}</h3> {/* Title added here */}
-                    <div
-                      dangerouslySetInnerHTML={{ __html: snippet }}
-                      className="card-text"
-                    />
-                  </div>
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between align-items-center">
                     <a href={`/campaigns/${campaign.id}`} className="btn btn-primary">
-                    <i className="fa-brands fa-readme fa-flip fa-lg" ></i>&nbsp;
+                      <i className="fa-brands fa-readme fa-flip fa-lg"></i>&nbsp;
                       Read More
                     </a>
                     <button
-                      className="btn btn-success ml-2"
-                      onClick={()=> handleShare(campaign.id)}
-                      // onClick={(e) => {
-                      //   e.preventDefault();
-                        
-                      //   copyToClipboard(window.location.href + `/${campaign.id}`);
-                      // }}
+                      className="btn btn-success"
+                      onClick={() => handleShare(campaign.id)}
                     >
                       <i className="fa-regular fa-share fa-beat-fade fa-lg"></i>&nbsp;
                       Share
@@ -116,7 +111,6 @@ const CampaignsPage = () => {
             );
           })}
         </div>
-        
         {copiedMessageVisible && (
           <div
             className="toast show"
@@ -129,99 +123,106 @@ const CampaignsPage = () => {
         )}
       </div>
       <style jsx>{`
-      .social-icon {
-        margin: 10px;
-        color: #4267B2; // Facebook color
-        cursor: pointer;
-      }
-    
-      .social-icon:hover {
-        color: darken(#4267B2, 10%);
-      }
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color:transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-
-      .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        text-align: center;
-      }
-
-      .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        color: red;
-      }
-
-      .close:hover {
-        color: red;
-      }
-      
-      .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
-        text-align: center;
-      }
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      .close:hover, .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-        .image-container {
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
           width: 100%;
-          height: 200px;
-          overflow: hidden;
-          position: relative;
+          height: 100%;
+          background-color: transparent;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+
+        .modal-content {
+          background-color: white;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+          text-align: center;
+        }
+
+        .close {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          color: red;
+        }
+
+        .url-container {
+          padding: 10px;
+          background-color: #28a745; /* Green color for success */
+          border-radius: 5px;
+        }
+
+        .url-container p {
+          word-break: break-all; /* Prevent URL overflow */
+          margin: 0;
+          color: white;
+        }
+
+        .social-icons-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 10px;
+        }
+
+        .social-icon {
+          margin: 10px;
+          font-size: 24px;
+        }
+
+        .social-icon.facebook {
+          color: #1877f2; /* Facebook blue */
+        }
+
+        .social-icon.instagram {
+          color: #e1306c; /* Instagram pink */
+        }
+
+        .social-icon.messenger {
+          color: #0084ff; /* Messenger blue */
+        }
+
+        .social-icon.whatsapp {
+          color: #25d366; /* WhatsApp green */
+        }
+
+        .social-icon:hover {
+          opacity: 0.7;
         }
 
         .card {
+          height: 100%;
           display: flex;
           flex-direction: column;
-          height: 400px;
         }
 
-        .card-body {
+        .card-img-top {
+          object-fit: cover;
+          height: 200px; /* Adjust the height as needed */
+        }
+
+        .campaign-title {
+          margin-bottom: 10px;
+        }
+
+        .card-text {
           flex-grow: 1;
           overflow-y: auto;
         }
 
-        .card-footer {
-          padding: 10px;
+        .btn {
+          width: 100%;
         }
 
-        .card-img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+        .btn-success {
+          background-color: #28a745; /* Green color for success */
+          border-color: #28a745;
         }
       `}</style>
     </div>
