@@ -4,8 +4,12 @@ import { Campaign } from '../../types/types'; // Adjust the import path for your
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+// Define types for content and maxLength
+type Content = string;
+type MaxLength = number;
+
 // Function to sanitize and truncate the content
-const sanitizeAndTruncateContent = (content, maxLength) => {
+const sanitizeAndTruncateContent = (content: Content, maxLength: MaxLength) => {
   // Remove HTML tags using a regex
   const sanitizedContent = content.replace(/<[^>]+>/g, '');
   // Truncate the content to the specified maxLength
