@@ -4,6 +4,17 @@ import { Campaign } from '../../types/types'; // Adjust the import path for your
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+// Function to sanitize and truncate the content
+const sanitizeAndTruncateContent = (content, maxLength) => {
+  // Remove HTML tags using a regex
+  const sanitizedContent = content.replace(/<[^>]+>/g, '');
+  // Truncate the content to the specified maxLength
+  if (sanitizedContent.length > maxLength) {
+    return sanitizedContent.substr(0, maxLength) + '...';
+  }
+  return sanitizedContent;
+};
+
 const CampaignsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentCampaignUrl, setCurrentCampaignUrl] = useState('');
@@ -52,7 +63,7 @@ const CampaignsPage = () => {
             </span>
             <br />
             <div className="url-container">
-              <p className='alert alert-success'>{currentCampaignUrl}</p>
+              <p className='alert'>{currentCampaignUrl}</p>
               <button className='btn btn-info' onClick={() => copyToClipboard(currentCampaignUrl)}>
                 <i className="fa-regular fa-copy fa-bounce fa-xl"></i>
                 Copy
@@ -81,6 +92,7 @@ const CampaignsPage = () => {
       <div className="container">
         <div className="row">
           {campaignData.map((campaign) => {
+            const truncatedContent = sanitizeAndTruncateContent(campaign.content, 100);
             return (
               <div className="col-md-4 mb-4" key={campaign.id}>
                 <div className="card">
@@ -91,7 +103,7 @@ const CampaignsPage = () => {
                   />
                   <div className="card-body">
                     <h3 className="campaign-title">{campaign.title}</h3>
-                    <p className="card-text">{campaign.content}</p>
+                    <p className="card-text">{truncatedContent}</p>
                   </div>
                   <div className="card-footer d-flex justify-content-between align-items-center">
                     <a href={`/campaigns/${campaign.id}`} className="btn btn-primary">
