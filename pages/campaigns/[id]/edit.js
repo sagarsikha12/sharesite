@@ -25,6 +25,9 @@ const EditCampaignPage = () => {
     cover_image_url: '',
   });
 
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
   useEffect(() => {
     async function fetchCampaignData() {
       if (id) {
@@ -62,7 +65,7 @@ const EditCampaignPage = () => {
         setFormData({
           ...formData,
           cover_image: file,
-          cover_image_url: reader.result ,
+          cover_image_url: reader.result,
         });
       };
       reader.readAsDataURL(file);
@@ -91,15 +94,25 @@ const EditCampaignPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+    
       if (response.status === 200) {
+        setSuccess('Campaign updated successfully.');
+        setError('');
         router.push(`/campaigns/${id}`);
       } else {
-        console.error('Campaign update failed:', response.statusText);
+        setError('An error occurred while updating the campaign.');
+        setSuccess('');
       }
     } catch (error) {
-      console.error('Error updating campaign:', error);
+      if (error.response && error.response.status === 401) {
+        setError('Unauthorized: Please make sure you are the owner of this campaign');
+        setSuccess('');
+      } else {
+        setError('An error occurred while updating the campaign.');
+        setSuccess('');
+      }
     }
+    
   };
 
   return (
@@ -150,8 +163,19 @@ const EditCampaignPage = () => {
         <button type="submit" className="btn btn-success">Update Campaign</button>
       </form>
 
-      
-      <style jsx>{`
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="alert alert-success" role="alert">
+          {success}
+        </div>
+      )}
+
+<style jsx>{`
         .edit-container {
           max-width: 600px;
           margin: 0 auto;
