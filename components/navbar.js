@@ -3,9 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-
-
-
 // Import the NotificationsDropdown component
 import NotificationsDropdown from './NotificationsDropdown';
 
@@ -24,18 +21,18 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
       const apiConfig = {
         baseURL: `${apiUrl}/api/v1`,
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       };
 
-      axios.get('/users/current', apiConfig)
-        .then(response => {
+      axios
+        .get('/users/current', apiConfig)
+        .then((response) => {
           setIsAuthenticated(true);
           setUser(response.data.user);
-          
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error fetching user:', error);
         });
     }
@@ -49,110 +46,169 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     setIsAuthenticated(false);
   };
 
-
   return (
     <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
-      <Link href="/campaigns" className="navbar-brand">AwareShare</Link>
+      <Link href="/campaigns" className="navbar-brand">
+        AwareShare
+      </Link>
 
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span className="navbar-toggler-icon"></span>
       </button>
+
+      <style>
+        {`
+          /* Custom CSS class for dropdown items */
+          .custom-dropdown-item {
+            border: 1px solid lightblue; /* Border color */
+            background-color: white; /* Default background color */
+            color: black; /* Default text color */
+            /* Add more custom styles as needed */
+          }
+
+          /* Custom CSS class for dropdown items on hover */
+          .custom-dropdown-item:hover {
+            background-color: blue; /* Background color on hover */
+            color: white; /* Text color on hover */
+            /* Add more custom styles for hover effect */
+          }
+        `}
+      </style>
 
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ml-auto">
           {isAuthenticated ? (
             <>
               <li className="nav-item">
-                <span className="navbar-text mr-3">Welcome, {user ? user.email : ''}!</span>
+                <span className="navbar-text mr-3">
+                  Welcome, {user ? user.email : ''}!
+                </span>
               </li>
-               {/* Bell icon */}
-               <li className="nav-item mr-3">
-              
-              <NotificationsDropdown />
-            </li>
-              <li className="nav-item">
-                <Link href="/mycampaign" className="nav-link">My Campaigns</Link>
-              </li>
-      
-              
-             
-             {user && user.admin && (
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="adminDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Admin
-              </a>
-              <div className="dropdown-menu" aria-labelledby="adminDropdown">
-                <Link href="/admin/campaigns" className="dropdown-item">
-                  Review Requests
-                </Link>
-                <Link href="/admin/Userlist" className="dropdown-item">
-                  Manage users 
-                </Link>
-                <Link href="/admin/managenotification" className="dropdown-item">
-                  Manage Notifications 
-                </Link>
-                <Link href="/admin/editcategories" className="dropdown-item">
-                   Manage Categories
-                </Link>
-                <Link href="/admin/managecampaigns" className="dropdown-item">
-                   Manage Campaigns
-                </Link>
-                {/* Add more admin-related links here */}
-              </div>
-            </li>
-          )}
-              <li className="nav-item">
-                <Link href="/createCampaign" className="nav-link">New Campaign</Link>
+              {/* Bell icon */}
+              <li className="nav-item mr-3">
+                <NotificationsDropdown />
               </li>
               <li className="nav-item">
-                <Link href="/addcategorypage" className="nav-link">New Category</Link>
+                <Link href="/mycampaign" className="nav-link">
+                  My Campaigns
+                </Link>
+              </li>
+
+              {user && user.admin && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="adminDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Admin
+                  </a>
+                  <div className="dropdown-menu" aria-labelledby="adminDropdown">
+                    <Link
+                      href="/admin/campaigns"
+                      className="dropdown-item custom-dropdown-item"
+                    >
+                      Review Requests
+                    </Link>
+                    <Link
+                      href="/admin/Userlist"
+                      className="dropdown-item custom-dropdown-item"
+                    >
+                      Manage Users
+                    </Link>
+                    <Link
+                      href="/admin/managenotification"
+                      className="dropdown-item custom-dropdown-item"
+                    >
+                      Manage Notifications
+                    </Link>
+                    <Link
+                      href="/admin/editcategories"
+                      className="dropdown-item custom-dropdown-item"
+                    >
+                      Manage Categories
+                    </Link>
+                    <Link
+                      href="/admin/managecampaigns"
+                      className="dropdown-item custom-dropdown-item"
+                    >
+                      Manage Campaigns
+                    </Link>
+                    {/* Add more admin-related links here */}
+                  </div>
+                </li>
+              )}
+              <li className="nav-item">
+                <Link href="/createCampaign" className="nav-link">
+                  New Campaign
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/addcategorypage" className="nav-link">
+                  New Category
+                </Link>
               </li>
               <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             
-              
-              <i className="fa-regular fa-circle-user fa-fade fa-2xl"></i>
-              </a>
-              <div className="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="userDropdown">
-                <Link href="/passwordchange" className="dropdown-item">
-                  Change Password
-                </Link>
-                <Link href="/updateprofileform" className="dropdown-item">
-                  Update Profile
-                </Link>
-                <div className="dropdown-item" onClick={handleLogout}>
-                  
-                  <button className="btn btn-danger" onClick={handleLogout}>Logout&nbsp;
-                <i className="fa-solid fa-right-from-bracket"></i></button>
-               
-                
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i className="fa-regular fa-circle-user fa-fade fa-2xl"></i>
+                </a>
+                <div
+                  className="dropdown-menu dropdown-menu-right bg-light"
+                  aria-labelledby="userDropdown"
+                >
+                  <Link
+                    href="/passwordchange"
+                    className="dropdown-item custom-dropdown-item"
+                  >
+                    Change Password
+                  </Link>
+                  <Link
+                    href="/updateprofileform"
+                    className="dropdown-item custom-dropdown-item"
+                  >
+                    Update Profile
+                  </Link>
+                  <div className="dropdown-item" onClick={handleLogout}>
+                    <button className="btn btn-danger" onClick={handleLogout}>
+                      Logout&nbsp;
+                      <i className="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </li>
-
-             
-             
+              </li>
             </>
           ) : (
             <>
               <li className="nav-item">
-                 <Link href="/login" passHref>
-                    <button className="btn btn-info mr-2">Login</button>
+                <Link href="/login" passHref>
+                  <button className="btn btn-info mr-2">Login</button>
                 </Link>
-                </li>
-                <li className="nav-item">
+              </li>
+              <li className="nav-item">
                 <Link href="/signup" passHref>
-                    <button className="btn btn-info">SignUp</button>
+                  <button className="btn btn-info">SignUp</button>
                 </Link>
-                </li>
+              </li>
             </>
           )}
         </ul>
