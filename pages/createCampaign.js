@@ -283,8 +283,11 @@ export default function CreateCampaignPage() {
               onChange={(e) => setCoverImage(e.target.files[0])}
             />
             <small className="form-text text-muted">
-              Note: Locally uploaded images will be removed after 24 hours. For permanent image hosting, use Dropbox.
-            </small>
+            Note: Locally uploaded images will be removed after 24 hours. For permanent image hosting, you can use image address from google or use a Dropbox: Steps
+              for dropbox share: Dropbox Dropbox&apos;s shared links can be used more reliably for images: Create a Shareable
+              Link: Right-click on the file in Dropbox and select &apos;Copy link&apos;. Modify the URL: Change the dl=0 at the
+              end of the URL to raw=1. For example, change https://www.dropbox.com/s/xxxxx/photo.jpg?dl=0 to
+              https://www.dropbox.com/s/xxxxx/photo.jpg?raw=1.            </small>
             <input
               type="text"
               className="form-control mt-2"
