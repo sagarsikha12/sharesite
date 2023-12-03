@@ -127,7 +127,7 @@ export default function LoginPage() {
 
       {/* Forgot Password Link */}
       {emailSent ? (
-        <div className='alert alert-success'>Password reset email has been sent. Please check your spam folder for the email.</div>
+        <div className='alert alert-success'>Password reset email has been sent. Please check your All emails including spam folder for the email.</div>
       ) : (
         <div className="text-center">
           <button className="btn btn-link" onClick={handleForgotPasswordClick}>
