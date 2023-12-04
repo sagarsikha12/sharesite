@@ -32,7 +32,8 @@ export default function LoginPage() {
       if (response.status === 200) {
         if (response.data && response.data.jwt) {
           sessionStorage.setItem('token', response.data.jwt);
-          sessionStorage.setItem('refreshNeeded', 'true');
+          sessionStorage.setItem('email', email);
+    
           router.push('/campaigns');
         }
       } else {

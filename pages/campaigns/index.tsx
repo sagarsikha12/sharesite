@@ -81,10 +81,8 @@ const CampaignsPage = () => {
               <a href={`https://www.instagram.com/?url=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon instagram">
                 <i className="fa-brands fa-instagram fa-beat-fade fa-2x"></i>
               </a>
-              {/* Add Messenger share */}
-              <a href={`https://www.messenger.com/sharer.php?u=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon messenger">
-                <i className="fa-brands fa-facebook-messenger fa-beat-fade fa-2x"></i>
-              </a>
+            
+              
               {/* Add WhatsApp share */}
               <a href={`https://wa.me/?text=${currentCampaignUrl}`} target="_blank" rel="noopener noreferrer" className="social-icon whatsapp">
                 <i className="fa-brands fa-whatsapp fa-beat-fade fa-2x"></i>
