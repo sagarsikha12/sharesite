@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-
-// Import the NotificationsDropdown component
 import NotificationsDropdown from './notificationsDropdown.js';
+// Import the NotificationsDropdown component
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
