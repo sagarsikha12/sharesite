@@ -97,7 +97,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 <NotificationsDropdown />
               </li>
               <li className="nav-item">
-                <Link href="/myCampaign" className="nav-link">
+                <Link href="/myCampaigns" className="nav-link">
                   My Campaigns
                 </Link>
               </li>
@@ -123,25 +123,25 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                       Review Requests
                     </Link>
                     <Link
-                      href="/admin/userList"
+                      href="/admin/userLists"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Users
                     </Link>
                     <Link
-                      href="/admin/manageNotification"
+                      href="/admin/manageNotifications"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Notifications
                     </Link>
                     <Link
-                      href="/admin/editCategories"
+                      href="/admin/editCategory"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Categories
                     </Link>
                     <Link
-                      href="/admin/manageCampaigns"
+                      href="/admin/manageCampaign"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Campaigns
@@ -151,12 +151,12 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 </li>
               )}
               <li className="nav-item">
-                <Link href="/createCampaign" className="nav-link">
+                <Link href="/createCampaigns" className="nav-link">
                   New Campaign
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/addCategoryPage" className="nav-link">
+                <Link href="/addCategoryPages" className="nav-link">
                   New Category
                 </Link>
               </li>
@@ -177,13 +177,13 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                   aria-labelledby="userDropdown"
                 >
                   <Link
-                    href="/passwordChange"
+                    href="/passwordChanges"
                     className="dropdown-item custom-dropdown-item"
                   >
                     Change Password
                   </Link>
                   <Link
-                    href="/updateProfileForm"
+                    href="/updateProfileForms"
                     className="dropdown-item custom-dropdown-item"
                   >
                     Update Profile
@@ -205,7 +205,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/signUp" passHref>
+                <Link href="/signUps" passHref>
                   <button className="btn btn-info">SignUp</button>
                 </Link>
               </li>
