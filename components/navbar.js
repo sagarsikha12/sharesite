@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 
 // Import the NotificationsDropdown component
-import NotificationsDropdown from './notificationsDropdown';
+import NotificationsDropdown from './notificationsDropdown.js';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -97,7 +97,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 <NotificationsDropdown />
               </li>
               <li className="nav-item">
-                <Link href="/mycampaign" className="nav-link">
+                <Link href="/myCampaign" className="nav-link">
                   My Campaigns
                 </Link>
               </li>
@@ -123,25 +123,25 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                       Review Requests
                     </Link>
                     <Link
-                      href="/admin/Userlist"
+                      href="/admin/userList"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Users
                     </Link>
                     <Link
-                      href="/admin/managenotification"
+                      href="/admin/manageNotification"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Notifications
                     </Link>
                     <Link
-                      href="/admin/editcategories"
+                      href="/admin/editCategories"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Categories
                     </Link>
                     <Link
-                      href="/admin/managecampaigns"
+                      href="/admin/manageCampaigns"
                       className="dropdown-item custom-dropdown-item"
                     >
                       Manage Campaigns
@@ -156,7 +156,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/addcategorypage" className="nav-link">
+                <Link href="/addCategoryPage" className="nav-link">
                   New Category
                 </Link>
               </li>
@@ -177,13 +177,13 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                   aria-labelledby="userDropdown"
                 >
                   <Link
-                    href="/passwordchange"
+                    href="/passwordChange"
                     className="dropdown-item custom-dropdown-item"
                   >
                     Change Password
                   </Link>
                   <Link
-                    href="/updateprofileform"
+                    href="/updateProfileForm"
                     className="dropdown-item custom-dropdown-item"
                   >
                     Update Profile
@@ -205,7 +205,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/signup" passHref>
+                <Link href="/signUp" passHref>
                   <button className="btn btn-info">SignUp</button>
                 </Link>
               </li>
