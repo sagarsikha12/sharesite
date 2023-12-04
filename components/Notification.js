@@ -9,5 +9,4 @@ const Notification = ({ notification }) => {
     </div>
   );
 };
-
 export default Notification;
