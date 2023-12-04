@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import NotificationsDropdown from './notificationsDropdown.js';
+import NotificationsDropdown from './NotificationsDropdown.js';
 // Import the NotificationsDropdown component
 
 
