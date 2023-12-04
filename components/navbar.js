@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 
 // Import the NotificationsDropdown component
-import NotificationsDropdown from './NotificationsDropdown';
+import NotificationsDropdown from './notificationsDropdown';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
