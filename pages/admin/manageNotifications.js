@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const apiConfig = {
@@ -14,13 +15,13 @@ const NotificationsPage = () => {
   const [filter, setFilter] = useState('unapproved');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const router = useRouter();
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const token = sessionStorage.getItem('token');
         if (!token) {
-          return;
+          router.push('/login');
         }
 
         const response = await axios.get(`notifications?status=${filter}`, {
@@ -33,12 +34,12 @@ const NotificationsPage = () => {
         setNotifications(response.data);
       } catch (error) {
         console.error('Error fetching notifications:', error);
-        setErrorMessage('Error fetching notifications.');
+        setErrorMessage('Error fetching notifications. Please contact super admin you may not have sufficient permission');
       }
     };
 
     fetchNotifications();
-  }, [filter]);
+  }, [router,filter]);
 
   const deleteNotification = async (id) => {
     try {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,7 +14,7 @@ const CampaignList = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [, updateState] = useState(); // Create a state variable for triggering updates
-
+  const router = useRouter();
   const forceUpdate = () => updateState({});
 
   const updateCampaignList = (updatedCampaigns) => {
@@ -63,8 +64,10 @@ const CampaignList = () => {
           setLoading(false);
           console.error('Error fetching campaigns:', error);
         });
+    }else{
+      router.push('/login');
     }
-  }, [search, filter]); // Include filter in dependencies
+  }, [router,search, filter]); // Include filter in dependencies
 
   const updateCampaignListAfterAction = async (campaignId, newStatus) => {
     try {

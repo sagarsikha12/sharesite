@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useRouter } from 'next/router';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const UserList = () => {
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ const UserList = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-
+  const router = useRouter();
   const updateUserList = (updatedUsers) => {
     setUsers(updatedUsers);
     setTotalUsers(updatedUsers.length);
@@ -67,10 +67,12 @@ const UserList = () => {
         })
         .catch(error => {
           setLoading(false);
-          console.error('Error fetching user:', error);
+          console.error('Error fetching user:Please contact super admin you may not have sufficient permission', error);
         });
+    }else {
+      router.push('/login');
     }
-  }, [search]);
+  }, [router,search]);
   
 
   const handleDeleteAdmin = (userId) => {

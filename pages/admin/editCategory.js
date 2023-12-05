@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import {useRouter} from 'next/router';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const CategoryList = () => {
@@ -11,7 +12,8 @@ const CategoryList = () => {
   const [editableCategories, setEditableCategories] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  
+  const router = useRouter();
   useEffect(() => {
     const token = sessionStorage.getItem('token');
 
@@ -50,8 +52,10 @@ const CategoryList = () => {
           setLoading(false);
           console.error('Error fetching categories:', error);
         });
+    }else {
+      router.push('/login');
     }
-  }, [search]);
+  }, [router, search]);
 
   const handleDeleteCategory = (categoryId) => {
     const confirmed = window.confirm('Are you sure you want to delete this category?');

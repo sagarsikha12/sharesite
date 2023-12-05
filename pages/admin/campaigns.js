@@ -10,25 +10,33 @@ const AdminCampaigns = () => {
   const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
-    async function fetchNonReviewedCampaigns() {
-      try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.get( `${apiUrl}/admin/campaigns`,{
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-       
-        setCampaigns(response.data);
-      
-      } catch (error) {
-        console.error("Error fetching non-reviewed campaigns:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
 
-    fetchNonReviewedCampaigns();
+    const token = sessionStorage.getItem('token');
+    if(token){
+      async function fetchNonReviewedCampaigns() {
+        try {
+          const token = sessionStorage.getItem('token');
+          const response = await axios.get( `${apiUrl}/admin/campaigns`,{
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+         
+          setCampaigns(response.data);
+        
+        } catch (error) {
+          console.error("Error fetching non-reviewed campaigns:Please contact super admin you may not have sufficient permission", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+      fetchNonReviewedCampaigns();
+    }else {
+      router.push("/login");
+    }
+   
+
+    
   }, []);
 
   const approveCampaign = async (campaignId) => {
