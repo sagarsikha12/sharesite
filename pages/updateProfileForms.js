@@ -36,7 +36,7 @@ function UpdateProfileForm() {
 
         if (response.ok) {
           const userData = await response.json();
-          console.log(userData);
+         
           setFormData({
             first_name: userData.first_name,
             last_name: userData.last_name,
