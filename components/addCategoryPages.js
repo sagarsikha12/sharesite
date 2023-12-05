@@ -37,7 +37,7 @@ const AddCategoryPage = () => {
       }
 
       alert('Category added successfully');
-      Router.push('/mycampaign');
+      Router.push('/myCampaignsPages');
     } catch (error) {
       console.error('Error adding category:', error);
     }
