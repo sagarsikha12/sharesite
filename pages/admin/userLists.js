@@ -39,6 +39,7 @@ const UserList = () => {
   
           if (Array.isArray(userData)) {
             setUsers(userData);
+            console.log(userData);
             setTotalUsers(userData.length);
   
             const filtered = userData.filter((user) =>
@@ -48,8 +49,12 @@ const UserList = () => {
   
             // After fetching users, determine if the current user is a super admin
             const currentUserEmail = sessionStorage.getItem('email');
+            console.log('Current user email:',currentUserEmail);
             const currentUser = userData.find(user => user.email === currentUserEmail);
   
+            console.log('Current user is found in server by email:',currentUser);
+            console.log('Current user is superAdmin:',currentUser.isSuperAdmin);
+
             if (currentUser) {
               setIsSuperAdmin(currentUser.isSuperAdmin);
             } else {
