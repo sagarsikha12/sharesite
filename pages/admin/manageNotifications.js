@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import withAdminAuth from '../withAdminAuth';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const apiConfig = {
@@ -111,4 +112,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default NotificationsPage;
+export default withAdminAuth(NotificationsPage);

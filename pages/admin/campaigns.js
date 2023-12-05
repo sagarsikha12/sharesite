@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import withAdminAuth from '../withAdminAuth.js';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const AdminCampaigns = () => {
@@ -13,6 +14,7 @@ const AdminCampaigns = () => {
 
     const token = sessionStorage.getItem('token');
     if(token){
+      
       async function fetchNonReviewedCampaigns() {
         try {
           const token = sessionStorage.getItem('token');
@@ -112,4 +114,4 @@ const AdminCampaigns = () => {
   );
 };
 
-export default AdminCampaigns;
+export default withAdminAuth(AdminCampaigns);

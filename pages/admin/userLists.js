@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import withAdminAuth from '../withAdminAuth';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const UserList = () => {
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,7 @@ const UserList = () => {
   
             // After fetching users, determine if the current user is a super admin
             const currentUserEmail = sessionStorage.getItem('email');
-            console.log('Current user email:',currentUserEmail);
+            
             const currentUser = userData.find(user => user.email === currentUserEmail);
   
            
@@ -257,4 +258,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default withAdminAuth(UserList);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useRouter} from 'next/router';
+import withAdminAuth from '../withAdminAuth';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const CategoryList = () => {
@@ -12,6 +13,7 @@ const CategoryList = () => {
   const [editableCategories, setEditableCategories] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
   
   const router = useRouter();
   useEffect(() => {
@@ -208,7 +210,7 @@ const CategoryList = () => {
                       className=" flex auto btn btn-danger"
                       onClick={() => handleDeleteCategory(category.id)}
                     >
-                      Delete&nbsp; <i class="fa-solid fa-trash"></i>
+                      Delete&nbsp; <i className="fa-solid fa-trash"></i>
                     </button>
                     </div>
                  
@@ -223,4 +225,4 @@ const CategoryList = () => {
   );
 };
 
-export default CategoryList;
+export default withAdminAuth(CategoryList);
