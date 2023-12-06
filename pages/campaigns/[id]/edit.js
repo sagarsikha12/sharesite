@@ -7,6 +7,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromHTML } from 'draft-convert';
+import withUserAuth from '../../withUserAuth';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,6 +18,8 @@ const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Edi
 const EditCampaignPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -27,10 +30,39 @@ const EditCampaignPage = () => {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isComponentMounted, setIsComponentMounted] = useState(true);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await axios.get(`${apiUrl}/api/v1/users/current`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+         
+          if (isComponentMounted) {
+            setCurrentUser(response.data.user);
+          }
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+    return () => {
+      setIsComponentMounted(false);
+    };
+  }, [isComponentMounted]);
 
   useEffect(() => {
     async function fetchCampaignData() {
-      if (id) {
+      if (id && isComponentMounted) {
         try {
           const response = await fetch(`${apiUrl}/campaigns/${id}`);
           const data = await response.json();
@@ -41,6 +73,16 @@ const EditCampaignPage = () => {
             cover_image_url: data.cover_image_url,
             cover_image: null,
           });
+        
+          if (currentUser) {
+            const isOwner = data.ownerId === currentUser.id;
+            const isAdmin = currentUser.isAdmin;
+            if (isOwner || isAdmin) {
+              setIsAuthorized(true);
+            } else {
+              router.push('/unauthorized');
+            }
+          }
         } catch (error) {
           console.error('Error fetching campaign data:', error);
         }
@@ -48,7 +90,7 @@ const EditCampaignPage = () => {
     }
 
     fetchCampaignData();
-  }, [id]);
+  }, [id,currentUser,router,isComponentMounted]);
 
   const handleChange = (e) => {
     setFormData({
@@ -114,6 +156,10 @@ const EditCampaignPage = () => {
     }
     
   };
+
+  if(!isAuthorized){
+    return<div>Loading or unauthorized...</div>
+  }
 
   return (
     <div className="edit-container">
@@ -245,4 +291,4 @@ const EditCampaignPage = () => {
   );
 };
 
-export default EditCampaignPage;
+export default withUserAuth(EditCampaignPage);
