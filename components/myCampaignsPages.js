@@ -94,7 +94,7 @@ const MyCampaignsPage = () => {
                   </button>
                  
                   <button className="btn btn-danger" onClick={() => handleDeleteCampaign(campaign.id)}>Delete&nbsp;
-                  <i class="fa-solid fa-trash"></i>
+                  <i className="fa-solid fa-trash"></i>
                   </button>
                  
 
