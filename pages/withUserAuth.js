@@ -24,10 +24,12 @@ const withUserAuth = (WrappedComponent) => {
             });
 
             if (isComponentMounted) {
-              if (response) {
+              
+              if (response.data.success) {
                 setIsUser(true);
                
               } else {
+                
                 router.push('/unauthorized');
               }
             }

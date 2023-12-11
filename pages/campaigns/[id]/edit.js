@@ -46,6 +46,7 @@ const EditCampaignPage = () => {
 
          
           if (isComponentMounted) {
+            
             setCurrentUser(response.data.user);
           }
         } catch (error) {
@@ -76,7 +77,7 @@ const EditCampaignPage = () => {
         
           if (currentUser) {
             const isOwner = data.ownerId === currentUser.id;
-            const isAdmin = currentUser.isAdmin;
+            const isAdmin = currentUser.admin;
             if (isOwner || isAdmin) {
               setIsAuthorized(true);
             } else {
